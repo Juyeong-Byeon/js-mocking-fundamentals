@@ -2,24 +2,28 @@ const assert = require('assert')
 const thumbWar = require('../thumb-war')
 const utils = require('../utils')
 
-function fn(impl) {
-  const mockFn = (...args) => {
-    mockFn.mock.calls.push(args)
-    return impl(...args)
+
+function fn(implement){
+  const mockFn=(...args)=>{
+    mockFn.mock.calls.push(args);
+    return implement(...args);
   }
-  mockFn.mock = {calls: []}
-  return mockFn
+
+  mockFn.mock={calls:[]}
+  return mockFn;
+
+
 }
 
-const originalGetWinner = utils.getWinner
-utils.getWinner = fn((p1, p2) => p1)
+console.log('!!')
 
-const winner = thumbWar('Kent C. Dodds', 'Ken Wheeler')
-assert.strictEqual(winner, 'Kent C. Dodds')
-assert.deepStrictEqual(utils.getWinner.mock.calls, [
-  ['Kent C. Dodds', 'Ken Wheeler'],
-  ['Kent C. Dodds', 'Ken Wheeler']
-])
+const originalGetWinner=utils.getWinner;
+utils.getWinner=fn((p1,p2)=>p1);
+
+
+const winner=thumbWar('Kent C. Dodds','Ken Wheeler');
+assert.strictEqual(winner,'Kent C. Dodds');
+console.log(utils.getWinner.mock.calls);
 
 // cleanup
 utils.getWinner = originalGetWinner
